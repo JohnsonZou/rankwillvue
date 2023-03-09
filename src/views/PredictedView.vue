@@ -1,17 +1,18 @@
 <template>
   <div class="predicted">
     <h1>{{contestname}}</h1>
-    <el-button type="primary" icon="el-icon-refresh-left" v-on:click="goback" circle style="margin-right: 1vw;"></el-button>
+    <el-button type="primary" icon="el-icon-refresh-left" v-on:click="goback" style="margin-right: 1vw;"></el-button>
     <el-input v-model="input" placeholder="contestant name" @keyup.enter.native="srh" style="width: 15vw;"></el-input>
-    <template style="width: 100vw;" v-if="nosrh">
+    <h2></h2>
+    <template style="width: 95vw;">
       <el-table
-      :data="contestant"
-      style="width: width: 100vw">
+      :data="issrh?srhresult:contestant"
+      style="width: width: 95vw">
       <el-table-column
         prop="rank"
         label="RANK"
         align="center"
-        style="width: 15vw;">
+        style="width: 5vw;">
       </el-table-column>
       <el-table-column
         prop="username"
@@ -45,56 +46,20 @@
       </el-table-column>
 
     </el-table>
-
-
-
-  </template>
-
-  <template style="width: 100vw;" v-if="yessrh">
-      <el-table
-      :data="srhresult"
-      style="width: width: 100vw">
-      <el-table-column
-        prop="rank"
-        label="RANK"
-        align="center"
-        style="width: 15vw;">
-      </el-table-column>
-      <el-table-column
-        prop="username"
-        label="USERNAME"
-        align="center"
-        style="width: 15vw;">
-      </el-table-column>
-      <el-table-column
-        prop="dataregion"
-        label="REGION"
-        align="center"
-        style="width: 15vw;">
-      </el-table-column>
-      <el-table-column
-        prop="oldrating"
-        label="OLD RATING"
-        align="center"
-        style="width: 20vw;">
-      </el-table-column>
-      <el-table-column
-        prop="deltarating"
-        label="DELTA"
-        align="center"
-        style="width: 20vw;">
-      </el-table-column>
-      <el-table-column
-        prop="newrating"
-        label="NEW RATING"
-        align="center"
-        style="width: 20vw;">
-      </el-table-column>
-
-    </el-table>
+    <h2></h2>
+    <el-pagination
+      @current-change="handleCurrentChange"
+      background
+      layout="prev, pager, next"
+      v-if="!issrh"
+      :pageSize="pageSize"
+      :current-page.sync="pageNum"
+      :total="totalContestant">
+    </el-pagination>
 
 
   </template>
+
   </div>
 </template>
 
@@ -106,8 +71,7 @@ export default {
       contestname:"",
       pageNum:1,
       pageSize:25,
-      nosrh:true,
-      yessrh:false,
+      issrh:false,
       totalContestant:0,
       contestant:[],
       srhresult:[],
@@ -140,8 +104,8 @@ export default {
           this.contestant[i].newrating=parseFloat(this.contestant[i].newrating).toFixed(2)
           this.contestant[i].deltarating=parseFloat(this.contestant[i].deltarating).toFixed(2)
         }
-
       })
+      this.issrh=false
     },
     handleCurrentChange(){
       this.showpage()
@@ -159,9 +123,7 @@ export default {
       ).then(res=>res.json()).then(res=>{
         this.srhresult.push(res.data.result)
       })
-      this.nosrh=false
-      this.yessrh=true
-
+      this.issrh=true
     },
     goback(){
       this.srhresult=[]

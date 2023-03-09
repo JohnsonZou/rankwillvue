@@ -3,7 +3,8 @@ import App from './App.vue'
 import router from './router'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-
+import { sha256 } from 'js-sha256'
+Vue.prototype.$sha256 = sha256
 Vue.config.productionTip = false
 Vue.use(ElementUI);
 new Vue({

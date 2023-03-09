@@ -1,14 +1,14 @@
 <template>
   <div class="home" style="justify-content: center;width: 100vw;text-align: center;">
-    <template style="width: 100vw;">
+    <template style="width: 90vw;">
     <el-table
       :data="contest"
-      style="width: width: 100vw">
+      style="width: width: 90vw">
       <el-table-column
         prop="contestName"
         label="CONTEST"
         align="center"
-        style="width: 50vw;">
+        style="width: 45vw;">
         <template slot-scope="props">
           <el-link type="primary" :href="'predicted/'+props.row.contestName"  :underline="false">{{props.row.contestName}}
             
@@ -19,7 +19,7 @@
         prop="updateTime"
         align="center"
         label="UPDATE TIME"
-        style="width: 50vw;">
+        style="width: 45vw;">
       </el-table-column>
     </el-table>
 
@@ -38,9 +38,6 @@
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
 export default {
   name: 'HomeView',
   data(){
@@ -51,9 +48,6 @@ export default {
       pageSize:10,
       pageTotNum:0,
     }
-  },
-  components: {
-    HelloWorld
   },
   created(){
     this.showpage()
